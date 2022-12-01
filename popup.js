@@ -4,22 +4,21 @@ const input = document.getElementById("input");
 const inputTargetHost = document.getElementById("current-host");
 const message = document.getElementById("message");
 
-let currentUrl
-let currentTab
+let currentUrl;
+let currentTab;
 
 // The async IIFE is necessary because Chrome <89 does not support top level await.
 (async function initPopupWindow() {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-  currentTab = tab
+  currentTab = tab;
 
   if (tab?.url) {
     try {
       let url = new URL(tab.url);
-      currentUrl = url
+      currentUrl = url;
       inputTargetHost.value = url.hostname;
-      input.value = 'staging.signavio.com';
-
+      input.value = "staging.signavio.com";
     } catch {}
   }
 
@@ -42,25 +41,34 @@ async function handleFormSubmit(event) {
   // 1. delete existing session cookies set by login screen
   // (they interfere with the cookies with the same name that we'll transfer from staging)
   await chrome.cookies.remove({
-    name: 'JSESSIONID',
-    url: currentUrl.href
-  })
+    name: "JSESSIONID",
+    url: currentUrl.href,
+  });
   await chrome.cookies.remove({
-    name: 'LBROUTEID',
-    url: currentUrl.href
-  })
+    name: "LBROUTEID",
+    url: currentUrl.href,
+  });
+  await chrome.cookies.remove({
+    name: "token",
+    url: currentUrl.href,
+  });
+  await chrome.cookies.remove({
+    name: "login",
+    url: currentUrl.href,
+  });
+  await chrome.cookies.remove({
+    name: "identifier",
+    url: currentUrl.href,
+  });
 
   // 2. transfer staging cookies to the current vercel-domain
   let message = await transferDomainCookies(url.hostname);
   setMessage(message);
 
   // 3. reload to the original vercel-domain + PI path to bypass login/explorer
-  chrome.tabs.update(
-    currentTab.id,
-    {
-      url: currentUrl.origin + '/g/statics/pi'
-    }
-  )
+  chrome.tabs.update(currentTab.id, {
+    url: currentUrl.origin + "/g/statics/pi",
+  });
 }
 
 function stringToUrl(input) {
@@ -97,7 +105,6 @@ async function transferDomainCookies(domain) {
 }
 
 async function transferCookie(cookie) {
-
   const newCookie = await chrome.cookies.set({
     expirationDate: cookie.expirationDate,
     httpOnly: cookie.httpOnly,
@@ -109,10 +116,10 @@ async function transferCookie(cookie) {
     value: cookie.value,
 
     url: currentUrl.href,
-    domain: inputTargetHost.value
-  })
+    domain: inputTargetHost.value,
+  });
 
-  console.log(newCookie)
+  console.log(newCookie);
 }
 
 function setMessage(str) {
