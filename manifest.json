@@ -3,7 +3,10 @@
   "manifest_version": 3,
   "version": "1.0",
   "permissions": ["cookies"],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": [
+    "https://*.vercel.app/*",
+    "https://staging.signavio.com/*"
+  ],
   "action": {
     "default_popup": "popup.html"
   }
