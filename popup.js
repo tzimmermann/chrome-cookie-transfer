@@ -101,7 +101,7 @@ async function transferDomainCookies(domain) {
     return `Unexpected error: ${error.message}`;
   }
 
-  return `Deleted ${cookiesDeleted} cookie(s).`;
+  return `Transfered ${cookiesDeleted} cookie(s).`;
 }
 
 async function transferCookie(cookie) {
