@@ -67,7 +67,7 @@ async function handleFormSubmit(event) {
 
   // 3. reload to the original vercel-domain + PI path to bypass login/explorer
   chrome.tabs.update(currentTab.id, {
-    url: currentUrl.origin + "/g/statics/pi",
+    url: currentUrl.origin,
   });
 }
 
