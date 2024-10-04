@@ -5,7 +5,8 @@
   "permissions": ["cookies"],
   "host_permissions": [
     "https://*.vercel.app/*",
-    "https://staging.signavio.com/*"
+    "https://staging.signavio.com/*",
+    "https://localhost:8080/*"
   ],
   "action": {
     "default_popup": "popup.html"
